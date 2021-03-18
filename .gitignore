@@ -1,0 +1,16 @@
+backend/.vs/ChatSignalR/v16/.suo
+backend/bin/Debug/net5.0/ChatSignalR.dll
+backend/bin/Debug/net5.0/ChatSignalR.pdb
+backend/bin/Debug/net5.0/ref/ChatSignalR.dll
+backend/obj/ChatSignalR.csproj.nuget.dgspec.json
+backend/obj/ChatSignalR.csproj.nuget.g.props
+backend/obj/project.assets.json
+backend/obj/project.nuget.cache
+backend/obj/Debug/net5.0/ChatSignalR.assets.cache
+backend/obj/Debug/net5.0/ChatSignalR.csproj.CoreCompileInputs.cache
+backend/obj/Debug/net5.0/ChatSignalR.csproj.FileListAbsolute.txt
+backend/obj/Debug/net5.0/ChatSignalR.csprojAssemblyReference.cache
+backend/obj/Debug/net5.0/ChatSignalR.dll
+backend/obj/Debug/net5.0/ChatSignalR.genruntimeconfig.cache
+backend/obj/Debug/net5.0/ChatSignalR.pdb
+backend/obj/Debug/net5.0/ref/ChatSignalR.dll
