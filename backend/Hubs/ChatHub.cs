@@ -7,7 +7,15 @@ using System.Threading.Tasks;
 
 namespace ChatSignalR.Hubs
 {
-    public class ChatHub : Hub<IChatHub>
+    public class Message
+    {
+        public string id { get; set; }
+        public string type { get; set; }
+        public string msg { get; set; }
+        public DateTime date { get; set; }
+    }
+
+    public class ChatHub : Hub
     {
         ILogger _logger;
 
@@ -26,15 +34,13 @@ namespace ChatSignalR.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var connectionId = Context.ConnectionId;
-            await Groups.RemoveFromGroupAsync(connectionId, "room");
             _logger.LogInformation($"{connectionId} desconectado");
             await base.OnDisconnectedAsync(exception);
         }
 
-        [HubMethodName("SendMessage")]
-        public async Task SendMessage(string message)
+        public async Task SendMessage(Message message)
         {
-            await this.Clients.AllExcept(this.Context.ConnectionId).ReceiveMessage(message);
+            await this.Clients.AllExcept(this.Context.ConnectionId).SendAsync("ReceiveMessage", message);
             _logger.LogInformation($"Mensagem enviada com sucesso: {message}");
         }
     }
