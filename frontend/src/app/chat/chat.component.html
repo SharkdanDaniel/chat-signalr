@@ -1,0 +1,41 @@
+<div class="wrapper">
+  <div class="chat-box d-flex flex-column">
+    <p class="entered text-center">Você inicou uma conversa com...</p>
+    <div class="chat-line d-flex flex-column" *ngFor="let item of messages">
+      <div
+        class="chat-window p-2 my-2 primary"
+        [class.primary]="item.type === 'primary'"
+        [class.secondary]="item.type === 'secondary'"
+      >
+        <p class="mb-0 py-1 px-1">{{ item.msg }}</p>
+        <div class="info">
+          <div class="align-self-end d-flex align-content-end">
+            <span>{{ item.date | date: "hh:mm:ss" }}</span>
+            <mat-icon *ngIf="item.type === 'primary'">done_all</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer
+    class="d-flex align-items-center justify-content-between w-100 footer bg-light"
+  >
+    <button class="shadow-none">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <form [formGroup]="form" class="w-100">
+      <textarea
+        (keyup.enter)="onSubmit($event)"
+        name="msg"
+        cols=""
+        rows="1"
+        class="form-control shadow-none"
+        placeholder="messagem..."
+        formControlName="msg"
+      ></textarea>
+    </form>
+    <button class="shadow-none" (click)="onSubmit()" type="submit" class="">
+      <mat-icon>send</mat-icon>
+    </button>
+  </footer>
+</div>
