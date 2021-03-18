@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Daniel\\source\\repos\\ChatSignalR\\ChatSignalR.csproj": {}
+    "\\\\wsl$\\Ubuntu\\home\\daniel\\Dev\\Autobem\\ChatAutoBem\\backend\\ChatSignalR.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Daniel\\source\\repos\\ChatSignalR\\ChatSignalR.csproj": {
+    "\\\\wsl$\\Ubuntu\\home\\daniel\\Dev\\Autobem\\ChatAutoBem\\backend\\ChatSignalR.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Daniel\\source\\repos\\ChatSignalR\\ChatSignalR.csproj",
+        "projectUniqueName": "\\\\wsl$\\Ubuntu\\home\\daniel\\Dev\\Autobem\\ChatAutoBem\\backend\\ChatSignalR.csproj",
         "projectName": "ChatSignalR",
-        "projectPath": "C:\\Users\\Daniel\\source\\repos\\ChatSignalR\\ChatSignalR.csproj",
+        "projectPath": "\\\\wsl$\\Ubuntu\\home\\daniel\\Dev\\Autobem\\ChatAutoBem\\backend\\ChatSignalR.csproj",
         "packagesPath": "C:\\Users\\Daniel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Daniel\\source\\repos\\ChatSignalR\\obj\\",
+        "outputPath": "\\\\wsl$\\Ubuntu\\home\\daniel\\Dev\\Autobem\\ChatAutoBem\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Daniel\\AppData\\Roaming\\NuGet\\NuGet.Config",

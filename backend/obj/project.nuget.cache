@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WuqP+KR8aZqsQw2wSwE1dW/okGZaruW1i6Afl/NzWMXXjNFQT2wL0i76cFu2XSxwMDYOfP2jbKMpqdCYDsou0A==",
+  "dgSpecHash": "0rY6a9UkvrbL/F+pSxplk0py4LHPcHD1xwlfW3oDCD/i98Lp1v/XCOyAHhlpi0yMDCTjoYQcdGoZy8hOlqYgog==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Daniel\\source\\repos\\ChatSignalR\\ChatSignalR.csproj",
+  "projectFilePath": "\\\\wsl$\\Ubuntu\\home\\daniel\\Dev\\Autobem\\ChatAutoBem\\backend\\ChatSignalR.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Daniel\\.nuget\\packages\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",
     "C:\\Users\\Daniel\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\2.2.0\\microsoft.aspnetcore.connections.abstractions.2.2.0.nupkg.sha512",
