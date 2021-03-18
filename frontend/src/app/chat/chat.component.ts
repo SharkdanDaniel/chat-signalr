@@ -12,17 +12,15 @@ export class ChatComponent implements OnInit {
   form: FormGroup;
   messages: Message[] = [];
   showSend = false;
-
-  title = 'ClientApp';  
-  txtMessage: string = '';  
-  uniqueID: string = new Date().getTime().toString();  
-  message: Message;
-
+  
   constructor(private fb: FormBuilder, private chatService: ChatService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      msg: [null, [Validators.required]]
+      msg: [null, [Validators.required]],
+      id: [null],
+      date: [null],
+      type: [null],
     });
     this.chatService.messageReceived.subscribe((data: any) => {
       console.log(data);      
@@ -31,56 +29,22 @@ export class ChatComponent implements OnInit {
     console.log(window.location.href);    
   }
 
-  // sendMessage(): void {  
-  //   if (this.txtMessage) {  
-  //     this.message;  
-  //     this.message.clientuniqueid = this.uniqueID;  
-  //     this.message.type = "sent";  
-  //     this.message.message = this.txtMessage;  
-  //     this.message.date = new Date();  
-  //     this.messages.push(this.message);  
-  //     this.chatService.sendMessage(this.message);  
-  //     this.txtMessage = '';  
-  //   }  
-  // }  
-  // private subscribeToEvents(): void {  
-  
-  //   this.chatService.messageReceived.subscribe((message: Message) => {  
-  //     this._ngZone.run(() => {  
-  //       if (message.clientuniqueid !== this.uniqueID) {  
-  //         message.type = "received";  
-  //         this.messages.push(message);  
-  //       }  
-  //     });  
-  //   });  
-  // }  
-
   onSubmit(ev?) {   
-    let msg = this.form.get('msg').value;
-    if (this.form.valid && msg.trim() != '') {
+    let message = this.form.value;
+    if (this.form.valid && message.msg.trim() != '') {
       this.form.reset();
-      this.sendMsg(msg);
+      message.date = new Date();
+      this.sendMsg(message);
       console.log('submit');
     }
   }
 
-  // onSubmit2(ev) {
-  //   let msg = this.form.get('msg').value;
-  //   if (this.form.valid && msg.trim() != '') {
-  //     this.form.reset();
-  //     this.sendOther(msg);
-  //     console.log('submit');
-  //   }
-  // }
-
-  sendMsg(msg) {
-    this.chatService.sendMessage(msg);
-    let date = new Date();
-    this.messages.push({ type: 'primary', msg: `${msg}                    `, date: date });
+  sendMsg(message: Message) {
+    this.chatService.sendMessage(message);
+    this.messages.push({ type: 'primary', msg: `${message.msg}                    `, date: message.date });
   }
 
-  messageReceived(msg) {
-    let date = new Date();
-    this.messages.push({ type: 'secondary', msg: `${msg}              `, date: date });
+  messageReceived(message: Message) {
+    this.messages.push({ type: 'secondary', msg: `${message.msg}              `, date: message.date });
   }
 }

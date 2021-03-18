@@ -33,11 +33,11 @@ export class ChatService {
       .start()
       .then(() => {
         this.connectionIsEstablished = true;
-        console.log('Hub connection started');
+        console.log('Conexão hub iniciada');
         this.connectionEstablished.emit(true);
       })
       .catch(err => {
-        console.log('Error while establishing connection, retrying...');
+        console.log('Erro ao tentar conectar, reconectando...');
         setTimeout(function() {
           this.startConnection();
         }, 5000);
