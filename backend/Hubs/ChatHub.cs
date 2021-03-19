@@ -39,7 +39,7 @@ namespace ChatSignalR.Hubs
     public class ChatHub : Hub
     {
         ILogger _logger;
-        private readonly List<Users> connection = new List<Users>();
+        private readonly Dictionary<string, string> connection = new Dictionary<string, string>();
 
         public ChatHub(ILogger<ChatHub> logger)
         {
@@ -72,7 +72,12 @@ namespace ChatSignalR.Hubs
 
         public async Task SendMessage(Message message)
         {
-            await this.Clients.Client(Context.ConnectionId).SendAsync("ReceiveMessage", message);
+            var connectionId = Context.ConnectionId;
+            var outroUser = connection.Where(x => x.nome == connectionId).FirstOrDefault();
+
+            
+            await this.Clients.Client(outroUser.nome).SendAsync("ReceiveMessage", message);
+
             _logger.LogInformation($"Mensagem enviada com sucesso: {message}");
         }
     }
