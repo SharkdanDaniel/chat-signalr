@@ -1,3 +1,5 @@
+import { ChatService } from './../chat.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +8,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  form: FormGroup
 
-  constructor() { }
+  constructor(private fb: FormBuilder, private chatService: ChatService) { }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      name: [null, [Validators.required]],
+      roomType: [null, [Validators.required]],
+    })
+  }
+
+  onSubmit(){
+    this.chatService
   }
 
 }

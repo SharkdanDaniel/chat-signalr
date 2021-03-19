@@ -41,10 +41,12 @@ export class ChatComponent implements OnInit {
 
   sendMsg(message: Message) {
     this.chatService.sendMessage(message);
-    this.messages.push({ type: 'primary', msg: `${message.msg}                    `, date: message.date });
+    // this.messages.push({ type: 'primary', msg: `${message.msg}                    `, date: message.date });
+    this.messages.push({ type: 'primary', msg: message.msg, date: message.date });
   }
 
   messageReceived(message: Message) {
-    this.messages.push({ type: 'secondary', msg: `${message.msg}              `, date: message.date });
+    // this.messages.push({ type: 'secondary', msg: `${message.msg}              `, date: message.date });
+    this.messages.push({ type: 'secondary', msg: message.msg, date: message.date });
   }
 }

@@ -60,11 +60,49 @@ button {
 .primary {
   background-color: rgb(76, 107, 163);
   align-self: flex-end;
+  position: relative;
+  z-index: 1;
+  p::after {
+    content: '';
+    margin-right: 79px;
+  }
+}
+.primary::after {
+  background-color: rgb(76, 107, 163);
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 33px;
+  height: 17px;
+  right: -7px;
+  top: 0;
+  border-radius: 0 0px 0 25px;
+  -webkit-transform: skewX(-41deg);
+  z-index: -1;
 }
 
 .secondary {
   background-color: rgb(138, 154, 184);
   align-self: flex-start;
+  z-index: 1;
+  p::after {
+    content: '';
+    margin-right: 60px;
+  }
+}
+
+.secondary::after {
+  background-color: rgb(138, 154, 184);
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 33px;
+  height: 17px;
+  left: -7px;
+  top: 0;
+  border-radius: 0 0 25px 5px;
+  -webkit-transform: skewX(41deg);
+  z-index: -1;
 }
 
 textarea {
