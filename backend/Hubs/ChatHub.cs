@@ -20,6 +20,11 @@ namespace ChatSignalR.Hubs
         public string nome { get; set; }
         public RoomType roomType { get; set; }
 
+        public Users(string nome)
+        {
+            this.nome = nome;
+        }
+
         public enum RoomType
         {
             [Description("Mulher")]
@@ -43,22 +48,22 @@ namespace ChatSignalR.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var message = new Users();
             var connectionId = Context.ConnectionId;
 
-            connection.Add(connectionId, message.nome);
+            if (connection.Count(x => x.nome == connectionId) == 0)
+                connection.Add(new Users(connectionId));
 
-            //await Groups.AddToGroupAsync(message.nome, message.roomType.ToString());
-            _logger.LogInformation($"{connectionId} Está conectado");
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var message = new Users();
             var connectionId = Context.ConnectionId;
 
-            connection.Remove(connectionId);
+            var conectado = connection.FirstOrDefault(x => x.nome == connectionId);
+
+            if (conectado != null)
+                connection.Remove(conectado);
 
             //await Groups.RemoveFromGroupAsync(message.nome, message.roomType.ToString());
             _logger.LogInformation($"{connectionId} desconectado");
@@ -67,8 +72,12 @@ namespace ChatSignalR.Hubs
 
         public async Task SendMessage(Message message)
         {
-            var user = new Users();
-            await this.Clients.Client(Context.ConnectionId).SendAsync("ReceiveMessage", message);
+            var connectionId = Context.ConnectionId;
+            var outroUser = connection.Where(x => x.nome == connectionId).FirstOrDefault();
+
+            
+            await this.Clients.Client(outroUser.nome).SendAsync("ReceiveMessage", message);
+
             _logger.LogInformation($"Mensagem enviada com sucesso: {message}");
         }
     }
