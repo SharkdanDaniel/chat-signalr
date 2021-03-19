@@ -14,23 +14,23 @@ export class ChatService {
   private _hubConnection: HubConnection;
 
   constructor() {
-    this.createConnection();
-    this.receiveMessage();
-    this.startConnection();
+    // this.createConnection();
+    // this.receiveMessage();
+    // this.startConnection();
   }
 
   sendMessage(message: Message) {
     this._hubConnection.invoke('SendMessage', message);
   }
 
-  private createConnection() {
+  createConnection() {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl('https://localhost:5001' + '/chatHub')
       // .withUrl('256-765-647.local' + '/chatHub')
       .build();
   }
 
-  private startConnection(): void {
+  startConnection(): void {
     this._hubConnection
       .start()
       .then(() => {
@@ -46,7 +46,7 @@ export class ChatService {
       });
   }
 
-  private receiveMessage(): void {
+  receiveMessage(): void {
     this._hubConnection.on('ReceiveMessage', (data: any) => {
       this.messageReceived.emit(data);
     });

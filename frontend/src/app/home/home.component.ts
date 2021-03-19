@@ -1,6 +1,7 @@
 import { ChatService } from './../chat.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   form: FormGroup
 
-  constructor(private fb: FormBuilder, private chatService: ChatService) { }
+  constructor(private fb: FormBuilder, private chatService: ChatService, private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -20,7 +21,10 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit(){
-    this.chatService
+    this.chatService.createConnection();
+    this.chatService.receiveMessage();
+    this.chatService.startConnection();
+    this.router.navigate(['chat']);
   }
 
 }
