@@ -1,5 +1,5 @@
 export interface Message {
-  id?: string
+  connectionId?: string
   type?: string;
   msg: string;
   date?: Date;

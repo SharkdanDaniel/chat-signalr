@@ -39,7 +39,7 @@ namespace ChatSignalR.Hubs
     public class ChatHub : Hub
     {
         ILogger _logger;
-        private readonly Dictionary<string, string> connection = new Dictionary<string, string>();
+        private readonly List<Users> connection = new List<Users>();
 
         public ChatHub(ILogger<ChatHub> logger)
         {
@@ -70,15 +70,31 @@ namespace ChatSignalR.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task SendMessage(Message message)
+        public async Task SendMessage(string toUser, string mensagem)
         {
-            var connectionId = Context.ConnectionId;
-            var outroUser = connection.Where(x => x.nome == connectionId).FirstOrDefault();
+            string fromUser = Context.ConnectionId;
 
-            
-            await this.Clients.Client(outroUser.nome).SendAsync("ReceiveMessage", message);
+            var connectedUser = connection.Where(x => x.nome == Context.ConnectionId).Select(u => u.nome).FirstOrDefault().ToString();
 
-            _logger.LogInformation($"Mensagem enviada com sucesso: {message}");
+            var user1 = connection.Where(x => x.nome == connectedUser).ToList();
+            var user2 = connection.Where(x => x.nome == toUser).ToList();
+
+            if (user1.Count != 0 && user2.Count != 0)
+            {
+                foreach (var item in user2)
+                {
+                    await Clients.Client(item.nome).SendAsync("ReceiveMEssage", connectedUser.ToString(), mensagem);
+                }
+
+                foreach (var item in user1)
+                {
+                    await Clients.Client(item.nome).SendAsync("ReceiveMessage", user2[0].nome, mensagem);
+                }
+            }
+
+            //await this.Clients.Client(outroUser.nome).SendAsync("ReceiveMessage", message);
+
+            //_logger.LogInformation($"Mensagem enviada com sucesso: {message}");
         }
     }
 }

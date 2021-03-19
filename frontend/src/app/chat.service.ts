@@ -1,3 +1,4 @@
+import { User } from './user';
 import { Message } from './message';
 import { EventEmitter, Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
@@ -43,7 +44,13 @@ export class ChatService {
         setTimeout(function() {
           this.startConnection();
         }, 5000);
-      });
+      }
+    );
+  }
+
+  searchUser(user: User) {
+    this._hubConnection.invoke('SearchUser', user);
+    console.log(user);
   }
 
   receiveMessage(): void {

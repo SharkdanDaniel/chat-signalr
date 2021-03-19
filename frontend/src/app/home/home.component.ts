@@ -22,8 +22,9 @@ export class HomeComponent implements OnInit {
 
   onSubmit(){
     this.chatService.createConnection();
-    this.chatService.receiveMessage();
     this.chatService.startConnection();
+    this.chatService.searchUser(this.form.value);
+    // this.chatService.receiveMessage();
     // this.router.navigate(['chat']);
   }
 
