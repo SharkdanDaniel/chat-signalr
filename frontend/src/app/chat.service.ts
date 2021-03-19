@@ -8,7 +8,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 export class ChatService {
   messageReceived = new EventEmitter<string>();
   connectionEstablished = new EventEmitter<boolean>();
-  userMached = new EventEmitter<boolean>();
+  userMatched = new EventEmitter<boolean>();
 
   private connectionIsEstablished = false;
   private _hubConnection: HubConnection;
@@ -26,7 +26,7 @@ export class ChatService {
   createConnection() {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl('https://localhost:5001' + '/chatHub')
-      // .withUrl('256-765-647.local' + '/chatHub')
+      // .withUrl('https://b43dd29e7928.ngrok.io' + '/chatHub')
       .build();
   }
 

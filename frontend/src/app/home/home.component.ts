@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     this.chatService.createConnection();
     this.chatService.receiveMessage();
     this.chatService.startConnection();
-    this.router.navigate(['chat']);
+    // this.router.navigate(['chat']);
   }
 
 }
