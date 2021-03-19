@@ -34,6 +34,7 @@ namespace ChatSignalR.Hubs
     public class ChatHub : Hub
     {
         ILogger _logger;
+        private readonly Dictionary<string, string> connection = new Dictionary<string, string>();
 
         public ChatHub(ILogger<ChatHub> logger)
         {
@@ -44,7 +45,10 @@ namespace ChatSignalR.Hubs
         {
             var message = new Users();
             var connectionId = Context.ConnectionId;
-            await Groups.AddToGroupAsync(message.nome, message.roomType.ToString());
+
+            connection.Add(connectionId, message.nome);
+
+            //await Groups.AddToGroupAsync(message.nome, message.roomType.ToString());
             _logger.LogInformation($"{connectionId} Está conectado");
             await base.OnConnectedAsync();
         }
@@ -53,7 +57,10 @@ namespace ChatSignalR.Hubs
         {
             var message = new Users();
             var connectionId = Context.ConnectionId;
-            await Groups.RemoveFromGroupAsync(message.nome, message.roomType.ToString());
+
+            connection.Remove(connectionId);
+
+            //await Groups.RemoveFromGroupAsync(message.nome, message.roomType.ToString());
             _logger.LogInformation($"{connectionId} desconectado");
             await base.OnDisconnectedAsync(exception);
         }
@@ -61,7 +68,7 @@ namespace ChatSignalR.Hubs
         public async Task SendMessage(Message message)
         {
             var user = new Users();
-            await this.Clients.Group(user.roomType.ToString()).SendAsync("ReceiveMessage", message);
+            await this.Clients.Client(Context.ConnectionId).SendAsync("ReceiveMessage", message);
             _logger.LogInformation($"Mensagem enviada com sucesso: {message}");
         }
     }
