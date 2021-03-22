@@ -1,4 +1,5 @@
 export interface User {
-  name: string
-  roomType: string;
+  name?: string
+  sexo: string;
+  sexoProcurando: string;
 }

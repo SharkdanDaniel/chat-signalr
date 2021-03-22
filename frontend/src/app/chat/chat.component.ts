@@ -26,7 +26,9 @@ export class ChatComponent implements OnInit {
       console.log(data);      
       this.messageReceived(data);
     });
-    console.log(window.location.href);    
+    this.chatService.createConnection();
+    this.chatService.startConnection();
+    console.log(window.location.href);
   }
 
   onSubmit(ev?) {   
@@ -41,12 +43,16 @@ export class ChatComponent implements OnInit {
 
   sendMsg(message: Message) {
     this.chatService.sendMessage(message);
-    // this.messages.push({ type: 'primary', msg: `${message.msg}                    `, date: message.date });
     this.messages.push({ type: 'primary', msg: message.msg, date: message.date });
   }
 
   messageReceived(message: Message) {
-    // this.messages.push({ type: 'secondary', msg: `${message.msg}              `, date: message.date });
     this.messages.push({ type: 'secondary', msg: message.msg, date: message.date });
   }
+
+  // onFocus(){
+  //   let body = document.querySelector('body');
+    
+  //   body.onfocus()
+  // }
 }

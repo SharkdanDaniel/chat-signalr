@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="chat-box d-flex flex-column">
-    <p class="entered text-center">Você inicou uma conversa com...</p>
+    <!-- <p class="entered text-center">Você inicou uma conversa com...</p> -->
     <div class="chat-line d-flex flex-column" *ngFor="let item of messages">
       <div
         class="chat-window p-2 my-2 primary"
@@ -20,9 +20,9 @@
   <footer
     class="d-flex align-items-center justify-content-between w-100 footer bg-light"
   >
-    <button class="shadow-none">
+    <!-- <button class="shadow-none">
       <mat-icon>refresh</mat-icon>
-    </button>
+    </button> -->
     <form [formGroup]="form" class="w-100">
       <textarea
         (keyup.enter)="onSubmit($event)"

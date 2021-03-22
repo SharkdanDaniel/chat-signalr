@@ -9,23 +9,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  form: FormGroup
+  form: FormGroup;
 
-  constructor(private fb: FormBuilder, private chatService: ChatService, private router: Router) { }
+  constructor(
+    private fb: FormBuilder,
+    private chatService: ChatService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
-      roomType: [null, [Validators.required]],
-    })
+      sexo: [null, [Validators.required]],
+      sexoProcurando: [null, [Validators.required]],
+    });
+    this.chatService.userMatched.subscribe(res => {
+      console.log('usuários encontrados', res);
+    });
   }
 
-  onSubmit(){
+  onSubmit() {
+    console.log(this.form.value);    
     this.chatService.createConnection();
-    this.chatService.startConnection();
-    this.chatService.searchUser(this.form.value);
+    this.chatService.startConnection(this.form.value);
+    // setTimeout(() => {
+    //   console.log('connectionID', this.chatService.connectionId());
+    // }, 2000);
+    // this.form.get('connctionId').setValue(this.chatService.connectionId());
+    // await this.chatService.searchUser(this.form.value);
     // this.chatService.receiveMessage();
     // this.router.navigate(['chat']);
   }
-
 }
