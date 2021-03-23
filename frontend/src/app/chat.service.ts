@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { User } from './user';
 import { Message } from './message';
 import { EventEmitter, Injectable } from '@angular/core';
@@ -8,27 +9,17 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 })
 export class ChatService {
   messageReceived = new EventEmitter<string>();
+  isSentMessage = new EventEmitter();
+  isReceivedMessage = new EventEmitter();
+  isReadMessage = new EventEmitter();
   connectionEstablished = new EventEmitter<boolean>();
-  userMatched = new EventEmitter<boolean>();
+  matchedDisconnected = new EventEmitter();
+  userMatched = new EventEmitter();
 
   private connectionIsEstablished = false;
   private _hubConnection: HubConnection;
-  // private connectionId: string;
 
-  constructor() {
-    // this.createConnection();
-    // this.receiveMessage();
-    // this.receiveMatch();
-    // this.startConnection();
-  }
-
-  // get getConnectionId() {
-  //   return this.connectionId;
-  // }
-
-  sendMessage(message: Message) {
-    this._hubConnection.invoke('SendMessage', message);
-  }
+  constructor(private router: Router) {}
 
   createConnection() {
     this._hubConnection = new HubConnectionBuilder()
@@ -44,11 +35,9 @@ export class ChatService {
         this.connectionIsEstablished = true;
         console.log('Conexão hub iniciada');
         this.connectionEstablished.emit(true);
-        // this.connectionId = this._hubConnection.connectionId;
-        // user.connectionId = this._hubConnection.connectionId;
         this.searchUser(user);
-        this.receiveMatch();
-        this.receiveMessage();
+        this.onReceiveMatch();
+        this.onIsDisconnected();
       })
       .catch(err => {
         console.log('Erro ao tentar conectar, reconectando...');
@@ -58,19 +47,76 @@ export class ChatService {
       });
   }
 
+  // ENVIA A MENSAGEM
+  sendMessage(message: Message) {
+    this._hubConnection.invoke('SendMessage', message);
+    this.onSentMessage();
+  }
+
+  // AVISA AO SERVIDOR QUE RECEBEU A MENSAGEM
+  justReadMessage(){
+    this._hubConnection.invoke('ReadMessage');
+    this.onReadMessage();
+  }
+
+
+  // PRIVATE METHODS
+
+  // PROCURA POR UM PARCEIRO DE CHAT
   private searchUser(user: User) {
     this._hubConnection.invoke('Search', user);
   }
 
+  // RECEBE MENSAGEM
   private receiveMessage(): void {
     this._hubConnection.on('ReceiveMessage', (data: any) => {
       this.messageReceived.emit(data);
+      this.receivedMessage();
     });
   }
 
-  private receiveMatch() {
-    this._hubConnection.on('Match', (data: any) => {
-      this.userMatched.emit(true);
+  // AVISA QUE RECEBEU A MENSAGEM
+  private receivedMessage() {
+    this._hubConnection.invoke('ReceivedMessage');
+    this.onReceivedMessage();
+  }
+
+  // ESCUTA QUANDO O OUTRO USUÁRIO RECEBEU A MENSAGEM
+  private onReceivedMessage() {
+    this._hubConnection.on('IsReceivedMessage', () => {
+      this.isReceivedMessage.emit();
+    })
+  }
+
+  // ESCUTA O AVISO QUANDO ACHOU UM PARCEIRO DE CHAT
+  private onReceiveMatch() {
+    this._hubConnection.on('Match', () => {
+      this.userMatched.emit();
+      this.receiveMessage();
+      setTimeout(() => {
+        this.router.navigate(['chat']);
+      }, 200);
+    });
+  }
+
+  // ESCUTA O AVISO QUANDO ENVIOU A MENSAGEM
+  private onSentMessage() {
+    this._hubConnection.on('SentMessage', () => {
+      this.isSentMessage.emit();
+    });
+  }
+
+  // ESCUTA O AVISO QUANDO LERAM A MENSAGEM
+  private onReadMessage() {
+    this._hubConnection.on('IsReadMessage', () => {
+      this.isReadMessage.emit();
+    })
+  }
+
+  // ESCUTA O AVISO QUANDO O OUTRO USUÁRIO DESCONECTOU
+  private onIsDisconnected() {
+    this._hubConnection.on('Disconnect', () => {
+      this.matchedDisconnected.emit();
     });
   }
 }
