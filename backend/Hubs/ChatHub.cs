@@ -34,20 +34,6 @@ namespace ChatSignalR.Hubs
         //        [Description("Ambos")]
         //        ambos = 2
         //    }
-        public Users(string nome)
-        {
-            this.nome = nome;
-        }
-
-        public enum RoomType
-        {
-            [Description("Mulher")]
-            mulher = 0,
-            [Description("Homem")]
-            homem = 1,
-            [Description("Ambos")]
-            ambos = 2
-        }
     }
 
     public class ChatHub : Hub
@@ -55,7 +41,6 @@ namespace ChatSignalR.Hubs
         ILogger _logger;
         private readonly List<Users> usersConnect = new List<Users>();
         private readonly Dictionary<string, string> pairs = new Dictionary<string, string>();
-        private readonly List<Users> connection = new List<Users>();
 
         public ChatHub(ILogger<ChatHub> logger)
         {
@@ -80,22 +65,6 @@ namespace ChatSignalR.Hubs
 
                 _logger.LogInformation($"Match dos usuarios {userMatch.connectionId} & {user.connectionId}");
 
-            var connectionId = Context.ConnectionId;
-
-            if (connection.Count(x => x.nome == connectionId) == 0)
-                connection.Add(new Users(connectionId));
-
-            await base.OnConnectedAsync();
-        }
-
-        public override async Task OnDisconnectedAsync(Exception exception)
-        {
-            var connectionId = Context.ConnectionId;
-
-            var conectado = connection.FirstOrDefault(x => x.nome == connectionId);
-
-            if (conectado != null)
-                connection.Remove(conectado);
 
                 pairs.Add(Context.ConnectionId, userMatch.connectionId);
                 pairs.Add(userMatch.connectionId, Context.ConnectionId);
@@ -137,33 +106,8 @@ namespace ChatSignalR.Hubs
             //    await Clients.Client(idFromConnection).SendAsync("SendMessage", message.msg);
 
             //    _logger.LogInformation($"Mensagem enviada para {idFromConnection}");
-        }
+            //}
 
-        public async Task SendMessage(string toUser, string mensagem)
-        {
-            string fromUser = Context.ConnectionId;
-
-            var connectedUser = connection.Where(x => x.nome == Context.ConnectionId).Select(u => u.nome).FirstOrDefault().ToString();
-
-            var user1 = connection.Where(x => x.nome == connectedUser).ToList();
-            var user2 = connection.Where(x => x.nome == toUser).ToList();
-
-            if (user1.Count != 0 && user2.Count != 0)
-            {
-                foreach (var item in user2)
-                {
-                    await Clients.Client(item.nome).SendAsync("ReceiveMEssage", connectedUser.ToString(), mensagem);
-                }
-
-                foreach (var item in user1)
-                {
-                    await Clients.Client(item.nome).SendAsync("ReceiveMessage", user2[0].nome, mensagem);
-                }
-            }
-
-            //await this.Clients.Client(outroUser.nome).SendAsync("ReceiveMessage", message);
-
-            //_logger.LogInformation($"Mensagem enviada com sucesso: {message}");
         }
 
         //public async Task Search(Sexo sexo, string otherUserId)
