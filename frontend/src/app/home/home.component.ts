@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
       sexoProcurando: [null, [Validators.required]],
     });
     this.chatService.userMatched.subscribe(res => {
-      console.log('usuários encontrados', res);
+      console.log('usuários encontrados');
     });
   }
 
