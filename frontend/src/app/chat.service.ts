@@ -9,7 +9,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 export class ChatService {
   messageReceived = new EventEmitter<string>();
   connectionEstablished = new EventEmitter<boolean>();
-  userMatched = new EventEmitter<boolean>();
+  userMatched = new EventEmitter();
 
   private connectionIsEstablished = false;
   private _hubConnection: HubConnection;
@@ -32,8 +32,8 @@ export class ChatService {
 
   createConnection() {
     this._hubConnection = new HubConnectionBuilder()
-      // .withUrl('https://localhost:5001' + '/chatHub')
-      .withUrl('http://191.188.227.163:5000' + '/chatHub')
+      .withUrl('https://localhost:5001' + '/chatHub')
+      // .withUrl('http://191.188.227.163:5000' + '/chatHub')
       .build();
   }
 
@@ -69,8 +69,8 @@ export class ChatService {
   }
 
   private receiveMatch() {
-    this._hubConnection.on('Match', (data: any) => {
-      this.userMatched.emit(true);
+    this._hubConnection.on('Match', () => {
+      this.userMatched.emit();
     });
   }
 }
